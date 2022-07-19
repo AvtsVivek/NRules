@@ -1,0 +1,130 @@
+﻿@model RulesAndModels.Models.People
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="text-left">
+    <div>
+        NRules is configured for this app.
+        <br />
+        Type or paste a rule in this box below and then press tab.
+        <br />
+        Without pressing tab, the button may not be enabled and you will not be able to invoke the rule.
+        <br />
+        As an example you can try pasting the following.
+        <br />
+        Begin -------------------------------
+        <br />
+        // This is a valid comment and is a part of rule text. This line is not parsed by the rule engine.
+        <br /><br />
+        Func&lt;List&lt;double&gt;
+        , double&gt; arithmeticSum = dList =>
+        <br />
+        {
+        <br />
+        var finalResult = 0.0;
+        <br />
+        foreach (var d in dList) finalResult = finalResult + d;
+        <br />
+        //finalResult = (dList[0] - dList[1] + dList[2]) * dList[3];
+        <br />
+        return finalResult;
+        <br />
+
+        };
+        <br />
+        return arithmeticSum;
+        <br />
+        End -------------------------------
+        <br />
+        <table width="500" border="1">
+            <tr align="center"><td><input id="inputNumber1" type="number"></td><td><input id="inputNumber2" type="number"></td><td><input id="inputNumber3" type="number"></td><td><input id="inputNumber4" type="number"></td></tr>
+            <tr align="center"><td><input id="inputNumber5" type="number"></td><td><input id="inputNumber6" type="number"></td><td><input id="inputNumber7" type="number"></td><td><input id="inputNumber8" type="number"></td></tr>
+        </table>
+        <br />
+        The argus to the method ArithmeticOperation should be an expression either all int or all double.
+        <br />
+        <textarea id="nRulesTextArea" rows="5" cols="100"></textarea>
+        <br />
+        <button id="textAreaButton" class="btn btn-primary" onclick="PostTheRuleToServer()">Apply the Rule</button>
+        <br />
+
+        <br />
+        <div id="divNumber"></div>
+        <br />
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $("#textAreaButton").attr("disabled", true);
+
+        $(document).ready(function () {
+
+            $("#nRulesTextArea").on("keydown", function () {
+                if ($("#nRulesTextArea").val().length > 1) {
+                    $("#textAreaButton").attr("disabled", false);
+                    return;
+                }
+                $("#textAreaButton").attr("disabled", true);
+            })
+        });
+
+    function PostTheRuleToServer() {
+
+        var codeTextString = $("#nRulesTextArea").val();
+
+        var inputNumber1 = $("#inputNumber1").val();
+        var inputNumber2 = $("#inputNumber2").val();
+        var inputNumber3 = $("#inputNumber3").val();
+        var inputNumber4 = $("#inputNumber4").val();
+        var inputNumber5 = $("#inputNumber5").val();
+        var inputNumber6 = $("#inputNumber6").val();
+        var inputNumber7 = $("#inputNumber7").val();
+        var inputNumber8 = $("#inputNumber8").val();
+
+        var numberArray = [inputNumber1, inputNumber2, inputNumber3, inputNumber4
+            , inputNumber5, inputNumber6, inputNumber7, inputNumber8];
+
+
+        if (codeTextString.length == 0)
+            return;
+
+        var data = {
+            CodeTextString: codeTextString
+            , DataStringArray: numberArray
+        };
+
+        var getWorkflowDetailsUrl = window.location.origin + "/api/DynamicNRules/ProcessCSharpTextAsync"
+        $.ajax({
+            type: "POST",
+            url: getWorkflowDetailsUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                //$('#PersonOrderedList').empty();
+                //$.each(msg, function (index, value) {
+                //    console.log('The value at arr[' + index + '] is: ' + value.name);
+                //    var personObjectForLi = $('<li></li>').text(value.name);
+                //    $('#PersonOrderedList').append(personObjectForLi);
+                //});
+                //alert(msg);
+                $('#divNumber').text(msg);
+
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+    }
+
+    </script>
+}

@@ -1,0 +1,27 @@
+// This is a valid comment. This line is not parsed.
+
+using RulesAndModels.Models;
+
+rule "Male Person Rule"
+
+when
+    var person = Person(x => x.IsMale);
+    var personService = PersonService(x => true);               // Notes 1234561
+    
+then
+    Console.WriteLine("Male person name is " + person.Name);    // Notes 1234562
+    Console.WriteLine("Male person name is " + person.Name);
+    personService.AddPersonInfo(person);
+
+
+
+
+// Notes 1234561
+// var personService = PersonService(x => true); 
+// Instead of the above
+// You can use the bewlo as well. See the paranthesis. Parameter removed.
+// var personService = PersonService();
+//
+// Notes 1234561
+// You can remove the Console.WriteLine statements. 
+// They are present there to demo that multiple lines of code can be written after 'then'. 

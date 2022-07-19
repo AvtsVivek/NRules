@@ -1,0 +1,46 @@
+﻿@model RulesAndModels.Models.People
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="text-left">
+    <p>
+        Autofac is configured as a di container for this app.
+        <br />
+        To configure autofac, the following are the steps.
+        <ol>
+            <li>
+                First install nuget packages.
+                <ol>
+                    <li><a href="https://www.nuget.org/packages/Autofac/" target="_blank">Autofac</a></li>
+                    <li><a href="https://www.nuget.org/packages/Autofac.Extensions.DependencyInjection/" target="_blank">Autofac.Extensions.DependencyInjection</a></li>
+                </ol>
+            </li>
+            <li>Register AutofacServiceProviderFactory with the Host. See Program.cs file.</li>
+            <li>Next define a method called ConfigureContainer method in Startup.cs class.</li>
+            <li>
+                Now define Autofac modules as need, to register the dependencies.
+                Defining Autofac modules is not necessary. In this app, two autofac module are defined as follows.
+                <ol>
+                    <li>UiAutofacModule</li>
+                    <li>RulesEngineModule</li>
+                </ol>
+                Register the dependencies in there as needed.
+            </li>
+        </ol>
+        <br />
+        NRules is also configured for this app.
+    </p>
+    <ol>
+        @foreach (var item in Model.MalePersonList)
+        {
+            <li>
+                @Html.DisplayFor(m => item.Name)
+            </li>
+        }
+    </ol>
+</div>

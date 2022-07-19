@@ -1,0 +1,122 @@
+﻿@model RulesAndModels.Models.People
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="text-left">
+    <div>
+        NRules is configured for this app.
+        <br />
+        Type or paste a rule in this box below and then press tab.
+        <br />
+        Without pressing tab, the button may not be enabled and you will not be able to invoke the rule.
+        <br />
+        As an example you can try pasting the following.
+        <br />
+        Begin -------------------------------
+        <br />
+        // This is a valid comment and is a part of rule text. This line is not parsed by the rule engine.
+        <br />
+        using RulesAndModels.Models;
+        <br />
+        rule "Male Person Rule"
+        <br />
+        when
+        <br />
+        var person = Person(x => x.IsMale);
+        <br />
+        var arithmeticService = ArithmeticService();
+        <br />
+        then
+        <br />
+        Console.WriteLine("Person name is " + person.Name);
+        <br />
+        arithmeticService.ArithmeticOperation(45.0 + 12.3 );
+        <br />
+        End -------------------------------
+        <br />
+        The argus to the method ArithmeticOperation should be an expression either all int or all double.
+        <br />
+        <textarea id="nRulesTextArea" rows="5" cols="100"></textarea>
+        <br />
+        <button id="textAreaButton" class="btn btn-primary" onclick="PostTheRuleToServer()">Apply the Rule</button>
+        <br />
+        <br />
+        <div id="divNumber"></div>
+        <br />
+        References
+        <ol>
+            <li><a target="_blank" href="https://try.dot.net/">Try DotNet</a></li>
+            <li><a target="_blank" href="https://dotnet.microsoft.com/platform/try-dotnet">Try DotNet Ms</a></li>
+            <li><a target="_blank" href="https://github.com/dotnet/try">Try DotNet Github</a></li>
+            <li><a target="_blank" href="https://dotnet.microsoft.com/learn/dotnet/in-browser-tutorial/1">Try DotNet Tutorial</a></li>
+            <li><a target="_blank" href="https://github.com/dotnet/try/blob/main/DotNetTryLocal.md/">Try DotNet - Getting Started</a></li>
+            <li><a target="_blank" href="https://www.youtube.com/watch?v=E-W8e2C1Zwo">Try DotNet Video</a></li>
+            <li><a target="_blank" href="https://mathparser.org/">Math Parser</a></li>
+            <li><a target="_blank" href="https://github.com/mariuszgromada/MathParser.org-mXparser/">Math Parser GitHub</a></li>
+            
+
+        </ol>    
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $("#textAreaButton").attr("disabled", true);
+
+        $(document).ready(function () {
+
+            $("#nRulesTextArea").on("keydown", function () {
+                if ($("#nRulesTextArea").val().length > 1) {
+                    $("#textAreaButton").attr("disabled", false);
+                    return;
+                }
+                $("#textAreaButton").attr("disabled", true);
+            })
+        });
+
+    function PostTheRuleToServer() {
+
+        var ruleString = $("#nRulesTextArea").val();
+
+
+        if (ruleString.length == 0)
+            return;
+
+        var data = {
+            RuleString: ruleString
+        };
+
+        var getWorkflowDetailsUrl = "api/DynamicNRules/ProcessTextRule"
+        $.ajax({
+            type: "POST",
+            url: getWorkflowDetailsUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                //$('#PersonOrderedList').empty();
+                //$.each(msg, function (index, value) {
+                //    console.log('The value at arr[' + index + '] is: ' + value.name);
+                //    var personObjectForLi = $('<li></li>').text(value.name);
+                //    $('#PersonOrderedList').append(personObjectForLi);
+                //});
+                //alert(msg);
+                $('#divNumber').text(msg);
+
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+    }
+
+    </script>
+}

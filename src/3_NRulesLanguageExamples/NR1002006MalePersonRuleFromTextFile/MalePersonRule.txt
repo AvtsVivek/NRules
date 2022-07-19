@@ -1,0 +1,18 @@
+// This is a valid comment. This line is not parsed.
+
+using RulesAndModels.Models;
+
+// using RulesAndModels.Utilities;
+// An alternative ot the above using statement is the following 
+// AddNamespace method call in the Program.cs file.
+// repository.AddNamespace("RulesAndModels.Utilities");
+
+
+rule "Male Person Rule"
+
+when
+    var person = Person(x => x.IsMale);
+    
+then
+    Console.WriteLine("Male person name is " + person.Name);
+    UtilityPrintMethods.PrintPersonName(person);

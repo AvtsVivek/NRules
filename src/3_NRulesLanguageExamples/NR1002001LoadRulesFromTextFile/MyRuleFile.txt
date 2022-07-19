@@ -1,0 +1,11 @@
+using RulesAndModels.Models;
+
+// This is a valid comment. This line is not parsed.
+
+rule "Empty Guest Email"
+when
+    var guest = Guest(x => string.IsNullOrEmpty(x.Email));
+    
+then
+    Console.WriteLine("Guest email is empty. Customer={0}", guest.Name);
+

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Ui\css\site.css" />
+    <None Remove="Ui\favicon.ico" />
+    <None Remove="Ui\Js\site.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Ui\css\site.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Ui\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Ui\Js\site.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Autofac" Version="6.2.0" />
+	  <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+	  <PackageReference Include="NRules" Version="0.9.2" />
+    <PackageReference Include="NRules.RuleSharp" Version="0.0.7" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\1_RulesAndModels\RulesAndModels\RulesAndModels.csproj" />
+  </ItemGroup>
+</Project>

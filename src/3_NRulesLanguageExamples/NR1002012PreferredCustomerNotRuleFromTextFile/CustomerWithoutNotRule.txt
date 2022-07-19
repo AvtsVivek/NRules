@@ -1,0 +1,19 @@
+// This is a valid comment. This line is not parsed.
+
+using RulesAndModels.Models;
+
+// using RulesAndModels.Utilities;
+// An alternative ot the above using statement is the following 
+// AddNamespace method call in the Program.cs file.
+// repository.AddNamespace("RulesAndModels.Utilities");
+
+
+rule "Customer with Bank Account"
+
+when
+    var customer = CompanyCustomer(x => x.IsPreferred);
+    not BankAccount(a => a.AccountOwner == customer, a => a.IsActive);
+    
+then
+    //Console.WriteLine("Customer name is " + customer.Name);
+    UtilityPrintMethods.PrintCompanyCustomer(customer);

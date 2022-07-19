@@ -1,0 +1,25 @@
+﻿@model RulesAndModels.Models.People
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="text-left">
+
+    <p>
+        NRules is configured for this app.
+    </p>
+
+    <ol>    
+        @foreach (var item in Model.MalePersonList)
+        {
+        <li>
+            @Html.DisplayFor(m => item.Name)
+        </li>
+        }
+    </ol>
+
+</div>
